@@ -1,0 +1,162 @@
+{% load static %}
+<section id="collection">
+  <p>{{media_url}}</p>
+  <h3 class="fn__maintitle big" data-text="Multimedia" data-align="center">Multimedia</h3>
+  {% if fotos %}
+<!-- Section RoadMap -->
+	<div class="container">
+		<h6 class="fn__maintitle medium" data-text="Imagenes" data-align="center">Imagenes</h6>
+		<div class="fn_cs_roadmap">
+			<div class="slider_holder">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						{% for foto in fotos %}
+							<div class="swiper-slide">
+								<div class="item">
+									<span class="icon"></span>
+									<div class="boximg" style="position: relative;width: 100%;">
+						                <img class="img-responsive" src="{{ foto.imagen_thumb.url }}" width="100%" height="auto" alt="">
+						            </div>
+									<div class="item_in">
+										<h3 class="title">{{foto.autor|truncatechars:90}}</h3>
+                    <p class="description">{{foto.nombre|truncatechars:90}}</p>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="fn_cs_desc">
+	      <a href="{% url 'galeria' %}" class="metaportal_fn_button"><span>Ver Galeria</span></a>
+	    </div>
+	</div>
+<!-- !Section RoadMap -->
+<hr><hr>
+<hr><hr>
+{% endif %}
+<!-- Collection Section -->
+  <div class="container">
+    
+    <h6 class="fn__maintitle medium" data-text="Audiovisual" data-align="center">Audiovisual</h6>
+    
+    <div class="fn_cs_collection">
+      <div class="collection_top">
+        <div class="item">
+          <a class="video-btn item-youtube" data-toggle="modal" data-src="https://www.youtube.com/embed/uXTBwzqgPPY" data-target="#myModal">
+            <div class="item_in">
+              <div class="img">
+                <div class="abs_img" data-bg-img="https://img.youtube.com/vi/uXTBwzqgPPY/0.jpg"></div>
+                <img src="{% static 'images/1x1.jpg' %}" alt="">
+              </div>
+            </div>
+            <input type="hidden" value="https://img.youtube.com/vi/uXTBwzqgPPY/0.jpg">
+          </a>
+        </div>
+        <div class="item">
+          <a class="video-btn item-youtube" data-toggle="modal" data-src="https://www.youtube.com/embed/UCY-z4EfDgE" data-target="#myModal">
+            <div class="item_in">
+              <div class="img">
+                <div class="abs_img" data-bg-img="https://img.youtube.com/vi/UCY-z4EfDgE/0.jpg"></div>
+                <img src="{% static 'images/1x1.jpg' %}" alt="">
+              </div>
+            </div>
+            <input type="hidden" value="https://img.youtube.com/vi/UCY-z4EfDgE/0.jpg">
+          </a>
+        </div>
+        <div class="item">
+          <a class="video-btn item-youtube" data-toggle="modal" data-src="https://www.youtube.com/embed/9rvTfdSPdcA" data-target="#myModal">
+            <div class="item_in">               
+              <div class="img">               
+                <div class="abs_img" data-bg-img="https://img.youtube.com/vi/9rvTfdSPdcA/0.jpg"></div>                
+                <img src="{% static 'images/1x1.jpg' %}" alt="">
+              </div>              
+            </div>
+            <input type="hidden" value="https://img.youtube.com/vi/9rvTfdSPdcA/0.jpg">
+          </a>          
+        </div>
+        <div class="item">
+          <a class="video-btn item-youtube" data-toggle="modal" data-src="https://www.youtube.com/embed/TJZ_8W_BnEc" data-target="#myModal">
+            <div class="item_in">
+              <div class="img">
+                <div class="abs_img" data-bg-img="https://img.youtube.com/vi/TJZ_8W_BnEc/0.jpg"></div>
+                <img src="{% static 'images/1x1.jpg' %}" alt="">
+              </div>
+            </div>
+            <input type="hidden" value="https://img.youtube.com/vi/TJZ_8W_BnEc/0.jpg">
+          </a>
+        </div>
+      </div>
+      <div class="collection_bottom">
+        <div class="item">
+          <a class="video-btn item-youtube" data-toggle="modal" data-src="https://www.youtube.com/embed/-QS8fEirdn8" data-target="#myModal">
+            <div class="item_in">
+              <div class="img">
+                <div class="abs_img" data-bg-img="https://img.youtube.com/vi/-QS8fEirdn8/0.jpg"></div>
+                <img src="{% static 'images/1x1.jpg' %}" alt="">
+              </div>
+            </div>
+            <input type="hidden" value="https://img.youtube.com/vi/-QS8fEirdn8/0.jpg">
+          </a>
+        </div>
+        <div class="item">
+          <a class="video-btn item-youtube" data-toggle="modal" data-src="https://www.youtube.com/embed/V7nFww2633A" data-target="#myModal">
+            <div class="item_in">
+              <div class="img">
+                <div class="abs_img" data-bg-img="https://img.youtube.com/vi/V7nFww2633A/0.jpg"></div>
+                <img src="{% static 'images/1x1.jpg' %}" alt="">
+              </div>
+            </div>
+            <input type="hidden" value="https://img.youtube.com/vi/V7nFww2633A/0.jpg">
+          </a>
+        </div>
+        <div class="item">
+          <a class="video-btn item-youtube" data-toggle="modal" data-src="https://www.youtube.com/embed/4m-tnowcWp0" data-target="#myModal">
+            <div class="item_in">
+              <div class="img">
+                <div class="abs_img" data-bg-img="https://img.youtube.com/vi/4m-tnowcWp0/0.jpg"></div>
+                <img src="{% static 'images/1x1.jpg' %}" alt="">
+              </div>
+            </div>
+            <input type="hidden" value="https://img.youtube.com/vi/4m-tnowcWp0/0.jpg">
+          </a>
+        </div>
+        <div class="item">
+          <a class="video-btn item-youtube" data-toggle="modal" data-src="https://www.youtube.com/embed/foDMG0iU3IM" data-target="#myModal">
+            <div class="item_in">
+              <div class="img">
+                <div class="abs_img" data-bg-img="https://img.youtube.com/vi/foDMG0iU3IM/0.jpg"></div>
+                <img src="{% static 'images/1x1.jpg' %}" alt="">
+              </div>
+            </div>
+            <input type="hidden" value="https://img.youtube.com/vi/foDMG0iU3IM/0.jpg">
+          </a>
+        </div>
+      </div>
+    </div>
+  
+    <div class="fn_cs_desc">
+      <a href="{% url 'multimedia' %}" class="metaportal_fn_button"><span>Ver mas contenido</span></a>
+    </div>
+    
+  </div>
+</section>
+<!-- !Collection Section -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>        
+        <!-- 16:9 aspect ratio -->
+        <div class="embed-responsive embed-responsive-16by9">
+          <iframe class="embed-responsive-item" src="" id="video"  allowscriptaccess="always" allow="autoplay"></iframe>
+        </div>      
+      </div>
+    </div>
+  </div>
+</div> 
+  

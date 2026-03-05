@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load dashboard_custom_filters %}
+{% block css %}
+
+{% endblock %}
+{% block content %}
+<section id="caluz" class="caluz-help">
+  <div class="container mb-4">
+
+    <!-- Title -->
+    <header class="text-center">
+      <h3 class="fn__maintitle big mt-4 mb-4" data-text="CALUZ Model" data-align="center">CALUZ Model</h3>
+      <p class="mt-2 text-left">
+        En este formulario puedes ingresar una <strong>lista de luminarias</strong> para que Caluz calcule el
+        <strong>mapa de contribución lumínica</strong> a partir de sus ubicaciones y su intensidad.
+      </p>
+    </header>
+
+    
+      <div class="row">
+        <div class="col-12">
+
+          <div class="acc_item">
+            <div class="acc_content text-justify">
+              <!-- Upload form -->
+              <section class="mb-4" aria-labelledby="upload-title">
+                <h4 id="upload-title" class="h5 mb-3">Cargar archivo</h4>
+
+                <form id="fileForm" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <div class="form-group">
+                    {{ form }}
+                  </div>
+
+                  <div class="d-flex justify-content-start">
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      id="loadButton"
+                      {% if task_id %}disabled="disabled"{% endif %}
+                    >
+                      Cargar
+                    </button>
+                  </div>
+                </form>
+              </section>
+
+              <!-- Instructions -->
+              <section class="mb-4" aria-labelledby="csv-title">
+
+                <h4>1) Prepara tu archivo CSV</h4>
+                  <p class="text-left">El archivo debe estar en formato <strong>.csv</strong> (separado por comas).</p>
+                  <p class="text-left">Debe incluir <strong>una luminaria por fila</strong>.</p>
+                  <p class="text-left">Evita tildes y caracteres especiales en los nombres de columnas.</p>
+                  <p class="text-left">Recomendado: usa <strong>punto</strong> para decimales (ej: 123.45).</p>
+              </section>
+
+              <h4>2) Columnas requeridas</h4>
+              <p class="text-left">Tu CSV debe tener estas columnas <strong>obligatorias</strong>:</p>
+              <p class="text-left">easting: coordenada X (metros)</p>
+              <p class="text-left">northing: coordenada Y (metros)</p>
+              <p class="text-left">value: intensidad de la luminaria (por ejemplo flujo luminoso en lm, o potencia relativa según tu configuración)</p>
+              <p class="text-left">
+                <strong>Importante:</strong> <strong>easting</strong> y <strong>northing</strong> deben estar en el
+                <strong>mismo sistema de coordenadas</strong> que el proyecto/base ráster (por ejemplo UTM).
+              </p>
+
+              <h4>4) Recomendaciones para evitar errores</h4>
+                <p class="text-left">Asegúrate de que las coordenadas estén <strong>dentro del área de estudio</strong> (si quedan fuera, esa luminaria no se podrá procesar).</p>
+                <p class="text-left">No dejes celdas vacías en las columnas requeridas.</p>
+                <p class="text-left">Evita valores negativos en value.</p>
+                <p class="text-left">Si tu CSV viene con ; (punto y coma), conviértelo a comas antes de subirlo.</p>
+
+              <h4>5) ¿Qué ocurre después de cargarlo?</h4>
+                <p class="text-left">Caluz ubicará cada luminaria en la grilla de análisis.</p>
+                <p class="text-left">Sumará sus aportes según distancia/PSF.</p>
+                <p class="text-left">Generará el resultado (mapa/capa) para visualización y descarga (según la configuración del sistema).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  
+<!-- Content -->
+<div class="metaportal_fn_content">
+
+<div class="metaportal_fn_pagetitle">
+  
+  <div class="container small">
+    <div class="pagetitle">
+      <h3 class="fn__maintitle big" data-text="Solicitud de Informe de Contaminación Lumínica" data-align="center">Solicitud de Informe de Contaminación Lumínica</h3>
+    </div>
+  </div>
+</div>
+
+<!-- Similar Items -->
+<div class="metaportal_fn_similar">
+  <div class="metaportal_fn_drops">
+   <div class="container large">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" style="text-align: justify;">
+                    <h1>Su solicitud ha sido ingresada con éxito.</h1>
+                    <p>Nuestro equipo se comunicará con usted para entregar su iforme y cualquier duda o consulta no dudes en contactarnos <a href="mailto:iluminaconciencia@userena.cl">iluminaconciencia@userena.cl</a></p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="fn_cs_desc">
+                                <a href="{% url 'index' %}" class="metaportal_fn_button"><span>Volver a la página principal</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   </div>
+  </div>
+</div>
+<!-- !Similar Items -->
+{% endblock %}

@@ -1,0 +1,44 @@
+# Edit this file to introduce tasks to be run by cron.
+# 
+# Each task to run has to be defined through a single line
+# indicating with different fields when the task will be run
+# and what command to run for the task
+# 
+# To define the time you can provide concrete values for
+# minute (m), hour (h), day of month (dom), month (mon),
+# and day of week (dow) or use '*' in these fields (for 'any').
+# 
+# Notice that tasks will be started based on the cron's system
+# daemon's notion of time and timezones.
+# 
+# Output of the crontab jobs (including errors) is sent through
+# email to the user the crontab file belongs to (unless redirected).
+# 
+# For example, you can run a backup of all your user accounts
+# at 5 a.m every week with:
+# 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
+# 
+# For more information see the manual pages of crontab(5) and cron(8)
+# 
+# m h  dom mon dow   command
+*/5 * * * * python2 /home/ubuntu/iluminaconciencia-server/heartbeat.py
+10 8 * * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/night/
+20 8 * * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/week/
+30 8 * * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/month/
+0 0 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_bortle/
+10 0 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_stddev_magnitude/
+20 0 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_median_magnitude_clear/
+30 0 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_stddev_magnitude_clear/
+40 0 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_median_magnitude_covered/
+50 0 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_stddev_magnitude_covered/
+0 1 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_median_magnitude_cloudy/
+10 1 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_stddev_magnitude_cloudy/
+20 1 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_total_measurements_month/
+30 1 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_total_measurements_month_clear/
+40 1 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_total_measurements_month_covered/
+50 1 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_total_measurements_month_cloudy/
+00 2 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_percentage_measurements_month/
+10 2 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_percentage_measurements_month_clear/
+20 2 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_percentage_measurements_month_covered/
+30 2 1 * * /usr/bin/curl http://iluminaconciencia.userena.digital/dashboard/process/historical_percentage_measurements_month_cloudy/
+0 8 * * 1 /usr/bin/curl http://iluminaconciencia.userena.digital/reports/report/observation_time/

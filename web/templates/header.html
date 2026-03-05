@@ -1,0 +1,90 @@
+{% load static %}
+<!-- Mobile Navigation -->
+  <div class="metaportal_fn_mobnav">
+    <div class="nav-userena">
+      <div class="container">
+        <div class="row">
+          <div class="col-4">
+              <a href="http://www.userena.cl" target="_blank">
+                <img style="margin: 3%;" class="img-responsive float-left" src="{% static 'images/userena.png' %}" alt="logo-cna">
+              </a>
+          </div>
+          <div class="col-4 offset-4">
+              <a href="http://www.userena.cl" target="_blank">
+                <img style="margin: 3%;" class="img-responsive float-right" src="{% static 'images/cna-5.png' %}" alt="logo-cna">
+              </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mob_mid">
+      <div class="logo">
+        <a href="/"><img src="{% static 'images/logo.svg' %}" alt="" width="auto" height="50px"></a>
+      </div>
+      <div class="trigger">
+        <span></span>
+      </div>
+    </div>
+    <div class="mob_bot">
+      <ul>
+        <li><a class="creative_link" href="{{ HTTP_HOST }}/#home">Inicio</a></li>
+        <li><a class="creative_link" href="{{ HTTP_HOST }}/#about2">Quienes somos</a></li>
+        <li><a class="creative_link" href="{{ HTTP_HOST }}/#news">Noticias</a></li>
+        <li><a class="creative_link" href="{{ HTTP_HOST }}/#collection">Multimedia</a></li>
+        <li><a class="creative_link" href="{{ HTTP_HOST }}/#faq">FAQ</a></li>
+        <li><a class="creative_link" href="{{ HTTP_HOST }}/#articles">Artículos</a></li>
+        <li><a class="creative_link" href="{{ HTTP_HOST }}/#downloads">Descargas</a></li>
+        <li><a class="creative_link" href="{{ HTTP_HOST }}/#contact">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <!-- !Mobile Navigation -->
+<!-- Header -->
+  <header id="header">
+    <div class="nav-userena">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+              <a href="http://www.userena.cl" target="_blank">
+                <img width="auto" height="50" style="margin: 3%;" class="img-responsive float-left" src="{% static 'images/userena.png' %}" alt="logo-cna">
+              </a>
+          </div>
+          <div class="col-md-4 offset-md-4">
+              <a href="http://www.userena.cl" target="_blank">
+                <img width="auto" height="50" style="margin: 3%;" class="img-responsive float-right" src="{% static 'images/cna-5.png' %}" alt="logo-cna">
+              </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="header">
+      <div class="header_in">
+      
+        <div class="trigger_logo">
+          <div class="logo">
+            <a href="{% url 'index' %}"><img src="{% static 'images/logo.svg' %}" alt="" width="auto" height="50px"></a>
+          </div>
+        </div>
+        
+        <div class="nav">
+          <ul>
+            <li><a class="creative_link" href="{{ HTTP_HOST }}/#home">Inicio</a></li>
+            <li><a class="creative_link" href="{{ HTTP_HOST }}/#about2">Quienes Somos</a></li>
+            <li><a class="creative_link" href="{{ HTTP_HOST }}/#news">Noticias</a></li>
+            <li><a class="creative_link" href="{{ HTTP_HOST }}/#collection">Multimedia</a></li>
+            <li><a class="creative_link" href="{{ HTTP_HOST }}/#faq">FAQ</a></li>
+            <li><a class="creative_link" href="{{ HTTP_HOST }}/#articles">Artículos</a></li>
+            <li><a class="creative_link" href="{{ HTTP_HOST }}/#downloads">Descargas</a></li>
+            <li><a class="creative_link" href="{{ HTTP_HOST }}/#contact">Contacto</a></li>
+          </ul>
+        </div>
+        
+        <div class="wallet">
+          
+        </div>
+        
+      </div>
+    </div>
+  </header>
+  <!-- !Header -->
+

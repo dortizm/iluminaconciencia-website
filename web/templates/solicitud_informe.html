@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- Content -->
+<div class="metaportal_fn_content">
+
+<div class="metaportal_fn_pagetitle">
+  
+  <div class="container small">
+    <div class="pagetitle">
+      <h3 class="fn__maintitle big" data-text="Solicitud de Informe de Contaminación Lumínica" data-align="center">Solicitud de Informe de Contaminación Lumínica</h3>
+      <p>
+        <a href="{% url 'index' %}">Inicio</a>
+        <span class="divider">/</span>
+        <span class="text">Solicitar Informe</span>
+      </p>
+    </div>
+  </div>
+</div>
+<!-- Similar Items -->
+<div class="metaportal_fn_similar" style="margin-bottom: 10px;">
+    <div class="metaportal_fn_drops">
+     <div class="container large">
+          <div class="row">
+              <div class="col-md-12">
+                <div class="card" style="text-align: justify;">
+                    <h4>Descripción de la aplicación:</h4>
+                    <p>Esta aplicación permite calcular el efecto de la instalación de nuevas luminarias en el cielo
+                        de los principales observatorios astronómicos del norte de Chile. Para ello, se implementó
+                        el modelo descrito por Falchi et al. (2023), para estimar el brillo artificial del cielo en una
+                        coordenada del territorio sumando la contribución de todas las fuente lumínicas que se
+                        encuentran a menos de 500 Km. Las fuentes lumínicas fueron obtenidas de datos
+                        satelitales de la tierra de noche, en particular, del instrumento VIIRS, a bordo del satélite
+                        Suomi-NPP. <br>
+                        La aplicación realiza el cálculo en dos etapas:
+                    </p>
+                    <ul>
+                        <li>En la primera, calcula el efecto que tienen las luminarias ya existentes en el brillo
+                            artificial del cielo de los observatorios. Para ello, utiliza los datos satelitales descritos.</li>
+                        <li>En la segunda etapa, se calcula la contribución de las luminarias proyectadas para
+                            instalar. Estos datos son suministrados por el usuario en un archivo de texto de acuerdo al
+                            instruictivo.</li>
+                    </ul>
+                    <p>Una vez calculada esta última contribución, se estima comparan los valores de ambas
+                        etapas para obtener el porcentaje en que aumentará el brillo del cielo si se instalan las
+                        luminarias proyectadas. Este porcentaje de aumento es calculado para cada uno de los
+                        observatorios que se encuentren a menos de 500 Km de las luminarias proyectadas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!-- Similar Items -->
+<div class="metaportal_fn_similar">
+  <div class="metaportal_fn_drops">
+   <div class="container large">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card" style="text-align: justify;">
+                    <h4>Instrucciones:</h4>
+                    <p>El archivo que debe acompañar la solicitud corresponde a un CSV (solo texto, con valores separados con coma) y debe contener el siguiente formato:</p>
+                    <ul>
+                        <li>El encabezado consta de una sola línea, con los nombres de las columnas separados por comas. Invariablemente, la primera línea debe ser:
+                            <br>"lon,lat,lum"</li>
+                        <li>Desde la segunda línea en adelante, se debe incluir la información de las luminarias.</li>
+                        <li>La primera columna corresponde a la longitud en grados, en el sistema epsg:4326, con los decimales separados por puntos.</li>
+                        <li>La segunda columna corresponde a la latitud en grados, en el sistema epsg:4326, con los decimales separados por puntos.</li>
+                        <li>La tercera columna corresponde al flujo total emitido por la o las luminarias que serán instaladas en esa coordenadas.
+                        </li>
+                    </ul>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="fn_cs_desc">
+                                <a href="https://backendilumina.s3.amazonaws.com/media/plantillas/ejemplo_input.csv" class="metaportal_fn_button"><span>Archivo de ejemplo </span></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fn_cs_desc">
+                                <a href="https://backendilumina.s3.amazonaws.com/media/plantillas/plantilla_llenado.csv" class="metaportal_fn_button"><span>Plantilla para llenado</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="card">
+                <h1>Formulario de Solicitud</h1>
+                <form id="form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="row">
+                            <div class="col-md-4">{{ field.label }}</div>
+                            <div class="col-md-8">{{ field }}</div>
+                        </div>
+                    {% endfor %}
+                    <div class="fn_cs_desc" style="margin-bottom: 5%;">
+                        <button class="metaportal_fn_button" type="submit">Enviar Solicitud</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+   </div>
+  </div>
+</div>
+{% endblock %}
+

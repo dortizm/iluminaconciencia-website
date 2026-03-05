@@ -1,0 +1,142 @@
+{% load dashboard_custom_filters %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }}</title>
+    <style>
+        /* Agrega aquí estilos en línea para asegurar compatibilidad con la mayoría de clientes de correo */
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        p {
+            font-size: 20px; 
+            text-align: justify;
+        }
+
+        table {
+          border-collapse: collapse; /* Permite que los bordes se fusionen */
+          width: 100%;
+        }
+        th, td {
+          border: 1px solid black; /* Aplica el borde a cada celda */
+          padding: 8px;
+          text-align: left;
+        }
+        th {
+          background-color: #f2f2f2; /* Color de fondo para encabezados */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .header {
+            text-align: center;
+            padding: 10px;
+            background-color: #000;
+            color: #fff;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #888;
+            padding: 10px;
+        }
+        .title {
+          margin-left: 100px;
+          font-size: 24px; 
+          flex: 1;
+        }
+
+        .fig_title {
+          margin-top: -45px !important;
+          margin-bottom: 45px;
+          font-size: 15px;
+          text-align:center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div style="display: flex; align-items: center; justify-content: center; text-align: center;" class="header">
+          <img src="cid:logo" alt="logo" width="200px" height="100%"/>
+          <h1 class="title">Informe mes de {{month}} de {{name}}</h1>
+        </div>
+        <p>El proyecto IluminaConCiencia busca generar la red más grande y densa del mundo de monitoreo del brillo del cielo. Para lograr este objetivo nos hemos puesto como meta instalar 40 nodos en la Región de Coquimbo. Un nodo está compuesto por un TESS-W, un sistema eléctrico y según las necesidades se puede sumar un router 4G y/o paneles solares.</p>
+        <p>El nodo ubicado en el {{name}} situado en la comuna de {{commune}}, {{region}}, registra {{days}} días de funcionamiento en el último mes, con un total de {{total_measurements_month}} datos obtenidos. En la Figura 1, se observan la cantidad de días de acuerdo al estado de nubes observadas.</p>
+        <p>Se han recopilado {{total_measurements_clear}} datos donde el cielo está despejado, {{total_measurements_cloudy}} con nubes y {{total_measurements_covered}} con cielo cubierto, equivalente a un {{percentage_measurements_clear}}, {{percentage_measurements_cloudy}} y {{percentage_measurements_covered}} respectivamente del total de los datos obtenidos.</p>
+        <p style="text-align:center;"><img src="cid:fig_1" alt="fig_1" style="width: 800px; height: auto;"></p>
+        <!--<p class="fig_title">Figura 1</p>-->
+        <p>Con respecto al brillo del cielo, si consideramos todos los datos observados, el valor medio es de {{median_magnitude}} magnitud por arcosegundo².</p>
+        <p>La Figura 2 muestra la representación gráfica de los datos obtenidos en el último mes. Los puntos de color verde representan los datos de las noches despejadas, las de color rojo nublado y color azul cubierto. La línea amarilla corresponde al porcentaje de luna visible.</p>
+        <p style="text-align:center;"><img src="cid:fig_2" alt="fig_2" style="width: 800px; height: auto;"></p>
+        <!--<p class="fig_title">Figura 2</p>-->
+        <div class="row">
+          <table style="border:1px;">
+            <thead>
+              <tr>
+                <th colspan="2" class="text-white font-weight-bold"></th>
+                <th colspan="4" class="text-white">Total de datos</th>
+                <th colspan="3" class="text-white">Cielos despejados</th>
+                <th colspan="3" class="text-white">Cielos parcialmente nublados</th>
+                <th colspan="3" class="text-white">Cielos cubiertos</th>
+              </tr>
+              <tr>
+                <th scope="col" class="text-white">Fecha cálculo</th>
+                <th scope="col" class="text-white">Escala Bortle</th>
+                <th scope="col" class="text-white">Cantidad de datos</th>
+                <th scope="col" class="text-white">Porcentaje de datos</th>
+                <th scope="col" class="text-white">Magnitud media</th>
+                <th scope="col" class="text-white">Desviación estándar</th>
+                <th scope="col" class="text-white">Porcentaje de datos</th>
+                <th scope="col" class="text-white">Magnitud media</th>
+                <th scope="col" class="text-white">Desviación estándar</th>
+                <th scope="col" class="text-white">Porcentaje de datos</th>
+                <th scope="col" class="text-white">Magnitud media</th>
+                <th scope="col" class="text-white">Desviación estándar</th>
+                <th scope="col" class="text-white">Porcentaje de datos</th>
+                <th scope="col" class="text-white">Magnitud media</th>
+                <th scope="col" class="text-white">Desviación estándar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for data in historical %}
+                <tr>
+                  <th class="text-white font-weight-bold">{{ data.day }}-{{ data.month }}-{{ data.year }}</th>
+                  <td style="color:#d5a940;font-weight: 700;">{{ data.bortle_level|default_if_none:"" }}</td>
+                  <td style="color:#d5a940">{{ data.total_measurements_month }}</td>
+                  <td style="color:#d5a940">{{ data.percentage_measurements_month|to_percentage }}</td>
+                  <td style="color:#d5a940">{{ data.median_magnitude|floatformat:2 }}</td>
+                  <td style="color:#d5a940">{{ data.stddev_magnitude|floatformat:2 }}</td>
+                  <td style="color:#d5a940">{{ data.percentage_measurements_clear|to_percentage }}</td>
+                  <td style="color:#d5a940">{{ data.median_magnitude_clear|floatformat:2 }}</td>
+                  <td style="color:#d5a940">{{ data.stddev_magnitude_clear|floatformat:2 }}</td>
+                  <td style="color:#d5a940">{{ data.percentage_measurements_covered|to_percentage }}</td>
+                  <td style="color:#d5a940">{{ data.median_magnitude_covered|floatformat:2 }}</td>
+                  <td style="color:#d5a940">{{ data.stddev_magnitude_covered|floatformat:2 }}</td>
+                  <td style="color:#d5a940">{{ data.percentage_measurements_cloudy|to_percentage }}</td>
+                  <td style="color:#d5a940">{{ data.median_magnitude_cloudy|floatformat:2 }}</td>
+                  <td style="color:#d5a940">{{ data.stddev_magnitude_cloudy|floatformat:2 }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <p>Puedes descargar los datos del mes de {{month}} en el siguiente <a href="{{ data_url }}" target="_blank">link</a>.</p>
+        <p>Para más información sobre el proyecto y nodo visita la siguiente <a href="https://iluminaconciencia.userena.digital/" target="_blank">página</a></p>
+        <p>Saludos,<br>El equipo de IluminAConciencia</p>
+        <div class="footer">
+            <p>&copy; 2024. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

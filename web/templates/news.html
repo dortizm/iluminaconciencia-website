@@ -1,0 +1,36 @@
+{% load static %}
+<!-- Section RoadMap -->
+<section id="news">
+	<div class="container">
+		
+		<h3 class="fn__maintitle big" data-text="NOTICIAS" data-align="center">Noticias</h3>
+		
+		<div class="fn_cs_roadmap">
+			<div class="slider_holder">
+				<div class="swiper-container">
+					<div class="swiper-wrapper">
+						{% for news_item in news %}
+							<div class="swiper-slide">
+								<div class="item">
+									<span class="icon"></span>
+									<div class="boximg" style="position: relative;width: 100%;">
+						                <img class="img-responsive" src="{{ news_item.imagen.url }}" width="100%" height="auto" alt="">
+						            </div>
+									<div class="item_in">
+										<p class="date">{{news_item.fecha}}</p>
+										<h3 class="title"><a href="{% url 'news_item' news_item.id %}">{{news_item.titulo|truncatechars:90}}</a></h3>
+										<p class="desc">{{news_item.resumen|truncatechars:200}}</p>
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="fn_cs_desc">
+	      <a href="{% url 'news_list' %}" class="metaportal_fn_button"><span>Ver mas noticias</span></a>
+	    </div>
+	</div>
+</section>
+<!-- !Section RoadMap -->

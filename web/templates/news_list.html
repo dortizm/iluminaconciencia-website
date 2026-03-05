@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  
+<!-- Content -->
+  <div class="metaportal_fn_content">
+    
+    <div class="metaportal_fn_pagetitle">
+      
+      <div class="container small">
+        <div class="pagetitle">
+          <h3 class="fn__maintitle big" data-text="Noticias" data-align="center">Noticias</h3>
+          <p>
+            <a href="{% url 'index' %}">Inicio</a>
+            <span class="divider">/</span>
+            <a href="{% url 'news_list' %}">Noticias</a>
+          </p>
+        </div>
+      </div>
+    </div>
+      
+    <!-- Section Divider -->
+    <div class="fn_cs_section_divider">
+      <div class="divider">
+        <span class="short"></span>
+        <span class="long"></span>
+        <span class="short"></span>
+      </div>
+    </div>
+    <!-- !Section Divider -->
+    
+    <div class="metaportal_fn_bloglist">
+      <div class="container small">
+        <div class="bloglist">
+          <ul class="fn-isotope">
+            {% for news_item in news_list %}
+              <li class="isotope-item">
+                <div class="blog__item">
+                  <div class="counter">
+                    <span class="cc"><span>{{ forloop.counter }}</span></span>
+                  </div>
+                  <div class="meta">
+                    <p>{{ news_item.fecha}}</p>
+                  </div>
+                  <h3 class="title">
+                    <a href="{% url 'news_item' news_item.id %}">{{news_item.titulo|truncatechars:90}}</a>
+                  </h3>
+                  <p class="desc">{{news_item.resumen|truncatechars:200}}</p>
+                  <div class="image">
+                    <a href="{% url 'news_item' news_item.id %}">
+                      <img src="{{ news_item.imagen.url }}" alt="">
+                    </a>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- !Content -->
+{% endblock %}

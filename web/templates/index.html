@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- Content -->
+<div class="metaportal_fn_content">
+
+{% block slider %}{% include 'slider.html' %}{% endblock %}
+
+{% block us %}{% include 'us.html' %}{% endblock %}
+
+{% block escala_bortle %}{% include 'escala_bortle.html' %}{% endblock %}
+
+{% block project_stadistics %}{% include 'project_stadistics.html' %}{% endblock %}
+
+<!-- Section Divider -->
+<div class="fn_cs_section_divider">
+  <div class="divider">
+    <span class="short"></span>
+    <span class="long"></span>
+    <span class="short"></span>
+  </div>
+</div>
+<!-- !Section Divider -->
+
+{% block news %}{% include 'news.html' %}{% endblock %}
+
+
+<!-- Section Divider -->
+<div class="fn_cs_section_divider">
+  <div class="divider">
+    <span class="short"></span>
+    <span class="long"></span>
+    <span class="short"></span>
+  </div>
+</div>
+<!-- !Section Divider -->
+
+{% block gallery %}{% include 'gallery.html' %}{% endblock %}
+
+
+<!-- Section Divider -->
+<div class="fn_cs_section_divider">
+  <div class="divider">
+    <span class="short"></span>
+    <span class="long"></span>
+    <span class="short"></span>
+  </div>
+</div>
+<!-- !Section Divider -->
+
+{% block faq %}{% include 'faq.html' %}{% endblock %}
+
+<!-- Section Divider -->
+<div class="fn_cs_section_divider">
+  <div class="divider">
+    <span class="short"></span>
+    <span class="long"></span>
+    <span class="short"></span>
+  </div>
+</div>
+
+<!-- !Section Divider -->
+
+{% block articles %}{% include 'articles.html' %}{% endblock %}
+
+<!-- Section Divider -->
+<div class="fn_cs_section_divider">
+  <div class="divider">
+    <span class="short"></span>
+    <span class="long"></span>
+    <span class="short"></span>
+  </div>
+</div>
+<!-- !Section Divider -->
+
+{% block downloads %}{% include 'downloads.html' %}{% endblock %}
+
+<!-- Section Divider -->
+<div class="fn_cs_section_divider">
+  <div class="divider">
+    <span class="short"></span>
+    <span class="long"></span>
+    <span class="short"></span>
+  </div>
+</div>
+<!-- !Section Divider -->
+
+{% block contact %}{% include 'contact.html' %}{% endblock %}
+{% endblock %}
+
+{% block javascript %}
+<!-- !Scripts -->
+<script type="text/javascript">
+$(document).ready(function() {
+
+    // Gets the video src from the data-src on each button
+    var $videoSrc;  
+    $('.video-btn').click(function() {
+        $videoSrc = $(this).data( "src" );
+    });
+      
+    // when the modal is opened autoplay it  
+    $('#myModal').on('shown.bs.modal', function (e) {
+        
+      // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
+      $("#video").attr('src',$videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
+
+    });
+    // stop playing the youtube video when I close the modal
+    $('#myModal').on('hide.bs.modal', function (e) {
+        // a poor man's stop video
+        $("#video").attr('src',$videoSrc); 
+    });      
+    // document ready  
+});
+function cambiarImagen() {
+      var imagenGrande = document.querySelector('.imagen-grande');
+      var imagenPequena = document.querySelector('.imagen-pequena');
+      
+      if (window.innerWidth >= 768) {
+        imagenGrande.style.display = 'block';
+        imagenPequena.style.display = 'none';
+      } else {
+        imagenGrande.style.display = 'none';
+        imagenPequena.style.display = 'block';
+      }
+    }
+    
+    window.addEventListener('resize', cambiarImagen);
+    cambiarImagen(); // Llamar a la función al cargar la página para inicializar el estado
+
+</script>
+{% endblock %}

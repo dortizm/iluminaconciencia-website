@@ -1,0 +1,259 @@
+{% load static %}
+{% load dashboard_custom_filters %}
+{% block css %}
+<link rel="stylesheet" href='{% static "css/leaflet.css" %}' type="text/css" />
+<style>
+  .leaflet-control-layers {
+    text-align: left;
+    font-size: 16px;   
+  }
+  .leaflet-control-layers-overlays label {
+    display: flex;          
+    align-items: center;  
+  }
+  .leaflet-control-layers-overlays label span {
+    display: inline-flex;
+    align-items: center;
+  }
+  .leaflet-control-layers-overlays img {
+    margin-right: 6px;     
+    vertical-align: middle;
+  }
+</style>
+{% endblock %}
+    
+<!-- Project Stadistics -->
+<section id="project_stadistics">
+  <div class="bg">
+    <!--<div class="fn_cs_video bg">
+      <div class="abs_img" data-bg-img="{% static 'images/light_pollution_coquimbo.jpg' %}"></div>
+    </div>-->
+    <div class="row" style="display: block;">
+      <div id = "map" style = "width: auto; height: 500px;"></div>
+    </div>
+  </div>
+  <div class="container-fluid mt-4">
+  <div class="row">
+    <table class="table table-striped table-dark d-none d-md-table">
+      <thead>
+        <tr>
+          <th colspan="3" class="text-white font-weight-bold">{{ period }}</th>
+          <th colspan="4" class="text-white">Total de datos</th>
+          <th colspan="3" class="text-white">Cielos despejados</th>
+        </tr>
+        <tr>
+          <th scope="col" class="text-white">Institución</th>
+          <th scope="col" class="text-white" width="6%">Localidad</th>
+          <th scope="col" class="text-white">Escala Bortle</th>
+          <th scope="col" class="text-white">Cantidad de datos</th>
+          <th scope="col" class="text-white">Porcentaje de datos</th>
+          <th scope="col" class="text-white">Magnitud media</th>
+          <th scope="col" class="text-white">Desviación estándar</th>
+          <th scope="col" class="text-white">Porcentaje de datos</th>
+          <th scope="col" class="text-white">Magnitud media</th>
+          <th scope="col" class="text-white">Desviación estándar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in historical %}
+          <tr>
+            <th class="font-weight-bold"><a href="/dashboard/tessw/{{data.tess.id}}" class="text-white">{{ data.tess.name }}</a></th>
+            <td style="color:#d5a940">{{ data.tess.location }}</td>
+            <td style="color:#d5a940;font-weight: 700;">{{ data.bortle_level|default_if_none:"" }}</td>
+            <td style="color:#d5a940">{{ data.total_measurements_month }}</td>
+            <td style="color:#d5a940">{{ data.percentage_measurements_month|to_percentage }}</td>
+            <td style="color:#d5a940">{{ data.median_magnitude|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data.stddev_magnitude|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data.percentage_measurements_clear|to_percentage|default_if_none:"" }}</td>
+            <td style="color:#d5a940">{{ data.median_magnitude_clear|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data.stddev_magnitude_clear|floatformat:2 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+<!--  <div class="container">
+    <div class="fn_cs_steps gap" data-cols="4" data-gap="60">
+      <ul>
+        <li>
+          <div class="item">
+            <div class="item_in">
+              <h3 class="fn__gradient_title">00</h3>
+              <p>Colegios de la Región</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item">
+            <div class="item_in">
+              <h3 class="fn__gradient_title">00</h3>
+              <p>Centros de Astroturísmo</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item">
+            <div class="item_in">
+              <h3 class="fn__gradient_title">01</h3>
+              <p>Instituciones Públicas</p>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="item">
+            <div class="item_in">
+              <h3 class="fn__gradient_title">00</h3>
+              <p>Instituciones Privadas</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>-->
+</section>
+<!-- !Project Stadistics -->
+{% block javascript %}
+<script type="text/javascript" src="{% static 'js/leaflet.js' %}"></script>
+<script type="text/javascript">
+  var mapOptions = {
+     center: [-30.5, -71.7],
+     zoom: 8,
+     scrollWheelZoom: false
+  }
+
+  var map = new L.map('map', mapOptions);
+  
+  var layer = new L.TileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+      maxZoom: 22,
+      subdomains:['mt0','mt1','mt2','mt3']
+  });
+  map.addLayer(layer);
+
+  var tesswLayer = L.layerGroup().addTo(map);   
+  var tess4cLayer = L.layerGroup().addTo(map); 
+  var sqcLayer = L.layerGroup().addTo(map);           
+
+
+  {% for tessw_node in tessw_nodes %}
+    {% if tessw_node.lat and tessw_node.lon %} 
+      var iconOptionsW = {
+          {% if tessw_node.status == 0 or tessw_node.solar == 1 %}
+             iconUrl: "{% static '' %}images/scale/tessw_{{tessw_node.bortle_level}}.png",
+          {% else %}
+             iconUrl: "{% static 'images/scale/tessw_off.png' %}",
+          {% endif %}
+          iconSize: [50, 50]
+      };
+
+      var customIconW = L.icon(iconOptionsW);
+
+      var markerOptionsW = {
+          clickable: true,
+          draggable: false,
+          icon: customIconW
+      };
+
+      var markerW = L.marker(
+        [{{ tessw_node.lat|stringformat:".6f" }}, {{ tessw_node.lon|stringformat:".6f" }}],
+        markerOptionsW
+      );
+
+      var textW = '<table style="font-size: 12px;">'
+                 + '<tr><td colspan=2><b><a href="/dashboard/tessw/{{tessw_node.id}}">{{tessw_node.name}}</a></b></td></tr>'
+                 + '<tr><td>Magnitud:</td><td>{{ tessw_node.median_magnitude|floatformat:2 }}</td></tr>'
+                 + '<tr><td>Nivel Bortle:</td><td>{{ tessw_node.bortle_level }}</td></tr>'
+                 + '<tr><td colspan=2><a href="/dashboard/tessw/{{tessw_node.id}}">Más información</a></td></tr>'
+                 + '</table>';
+
+      markerW.bindPopup(textW);
+      markerW.addTo(tesswLayer);
+    {% endif %}
+  {% endfor %}
+
+  {% for tess4c_node in tess4c_nodes %}
+    {% if tess4c_node.lat and tess4c_node.lon %} 
+      var iconOptions4c = {
+          {% if tess4c_node.status == 0 or tess4c_node.solar == 1 %}
+             iconUrl: "{% static '' %}images/scale/tess4c_{{tess4c_node.bortle_level}}.png",
+          {% else %}
+             iconUrl: "{% static 'images/scale/tess4c_off.png' %}",
+          {% endif %}
+          iconSize: [50, 50]
+      };
+
+      var customIcon4c = L.icon(iconOptions4c);
+
+      var markerOptions4c = {
+          clickable: true,
+          draggable: false,
+          icon: customIcon4c
+      };
+
+      var marker4c = L.marker(
+        [{{ tess4c_node.lat|stringformat:".6f" }}, {{ tess4c_node.lon|stringformat:".6f" }}],
+        markerOptions4c
+      );
+
+      var text4c = '<table style="font-size: 12px;">'
+                 + '<tr><td colspan=2><b><a href="/dashboard/tess4c/{{ tess4c_node.id }}">{{ tess4c_node.name }}</a></b></td></tr>'
+                 + '<tr><td>Magnitud:</td><td>{{ tess4c_node.median_magnitude|floatformat:2 }}</td></tr>'
+                 + '<tr><td>Nivel Bortle:</td><td>{{ tess4c_node.bortle_level }}</td></tr>'
+                 + '<tr><td colspan=2><a href="/dashboard/tess4c/{{ tess4c_node.id }}">Más información</a></td></tr>'
+                 + '</table>';
+
+      marker4c.bindPopup(text4c);
+      marker4c.addTo(tess4cLayer);
+    {% endif %}
+  {% endfor %}
+
+  {% for sqc_node in sqc_nodes %}
+    {% if sqc_node.lat and sqc_node.lon %} 
+      var iconOptionssqc = {
+          iconUrl: "{% static '' %}images/scale/sqc_{{sqc_node.bortle_level}}.png",
+          iconSize: [50, 50]
+      };
+
+      var customIconsqc = L.icon(iconOptionssqc);
+
+      var markerOptionssqc = {
+          clickable: false,
+          draggable: false,
+          icon: customIconsqc
+      };
+
+      var markersqc = L.marker(
+        [{{ sqc_node.lat|stringformat:".6f" }}, {{ sqc_node.lon|stringformat:".6f" }}],
+        markerOptionssqc
+      );
+
+      var textsqc = '<table style="font-size: 12px;">'
+                 + '<tr><td colspan=2><b><a href="/dashboard/sqc/{{ sqc_node.id }}">{{ sqc_node.name }}</a></b></td></tr>'
+                 + '<tr><td>Magnitud:</td><td>{{ sqc_node.zenith_magnitude|floatformat:2 }}</td></tr>'
+                 + '<tr><td>Nivel Bortle:</td><td>{{ sqc_node.bortle_level }}</td></tr>'
+                 + '<tr><td colspan=2><a href="/dashboard/sqc/{{ sqc_node.id }}">Más información</a></td></tr>'
+                 + '</table>';
+
+      markersqc.bindPopup(textsqc);
+      markersqc.addTo(sqcLayer);
+    {% endif %}
+  {% endfor %}
+
+  var overlays = {
+    '<img src="{% static "images/scale/tessw.png" %}" style="width:35px;height:35px;"> TESS-W': tesswLayer,
+    '<img src="{% static "images/scale/tess4c.png" %}" style="width:35px;height:35px;"> TESS-4C': tess4cLayer,
+    '<img src="{% static "images/scale/sqc.png" %}" style="width:35px;height:35px;"> SQC': sqcLayer
+  };
+
+  L.control.layers(null, overlays, {
+    collapsed: false,
+    position: 'bottomleft'   
+  }).addTo(map);
+
+  function onMapClick(e) {
+      console.log(e.latlng);
+  }
+  map.on('click', onMapClick);
+</script>
+{% endblock %}

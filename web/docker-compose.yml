@@ -1,0 +1,114 @@
+version: "3"
+services:
+  redis:
+    image: redis:alpine
+    container_name: redis
+    networks:
+      - netweb
+    ports:
+      - "6379:6379"
+
+  django:
+    container_name: iluminaconciencia-website
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: iluminaconciencia-website:1.0
+    env_file:
+      - .env
+    command: >
+      sh -c "
+      ./wait-for-it.sh db 3306 -- &&
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py register_etl_tasks &&
+      python manage.py register_reports_tasks &&
+      python manage.py runserver 0.0.0.0:8000
+      "
+    volumes:
+      - .:/var/www/iluminaconciencia-website
+    ports:
+      - "8000:8000"
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    networks:
+      - netweb
+
+  nginx:
+    container_name: iluminaconciencia-nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    volumes:
+      - ./assets:/var/www/web/assets/
+      - ./media:/var/www/web/media/
+    ports:
+      - "8081:80"
+    networks:
+      - netweb
+    depends_on:
+      - django
+
+  celery_worker:
+    build:
+      context: .
+    container_name: celery_worker
+    env_file:
+      - .env
+    command: celery -A web worker --loglevel=info
+    depends_on:
+      - db
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=web.settings
+    volumes:
+      - .:/var/www/iluminaconciencia-website
+    networks:
+      - netweb
+
+  celery_beat:
+    build:
+      context: .
+    container_name: celery_beat
+    env_file:
+      - .env
+    command: celery -A web beat --loglevel=info
+    depends_on:
+      - db
+      - redis
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - DJANGO_SETTINGS_MODULE=web.settings
+    volumes:
+      - .:/var/www/iluminaconciencia-website
+    networks:
+      - netweb
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: ${MYSQL_ALLOW_EMPTY_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: ${MYSQL_RANDOM_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - netweb
+
+volumes:
+  db_data:
+
+networks:
+  netweb:
+    name: netiluminaconciencia
