@@ -231,9 +231,9 @@
 
       var textsqc = '<table style="font-size: 12px;">'
                  + '<tr><td colspan=2><b><a href="/dashboard/sqc/{{ sqc_node.id }}">{{ sqc_node.name }}</a></b></td></tr>'
-                 + '<tr><td>Magnitud:</td><td>{{ sqc_node.zenith_magnitude|floatformat:2 }}</td></tr>'
+                 + '<!--<tr><td>Magnitud:</td><td>{{ sqc_node.zenith_magnitude|floatformat:2 }}</td></tr>'
                  + '<tr><td>Nivel Bortle:</td><td>{{ sqc_node.bortle_level }}</td></tr>'
-                 + '<tr><td colspan=2><a href="/dashboard/sqc/{{ sqc_node.id }}">Más información</a></td></tr>'
+                 + '<tr><td colspan=2><a href="/dashboard/sqc/{{ sqc_node.id }}">Más información</a></td></tr>-->'
                  + '</table>';
 
       markersqc.bindPopup(textsqc);
