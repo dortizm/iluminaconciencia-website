@@ -211,7 +211,8 @@
   {% for sqc_node in sqc_nodes %}
     {% if sqc_node.lat and sqc_node.lon %} 
       var iconOptionssqc = {
-          iconUrl: "{% static '' %}images/scale/sqc_{{sqc_node.bortle_level}}.png",
+          //iconUrl: "{% static '' %}images/scale/sqc_{{sqc_node.bortle_level}}.png",
+          iconUrl: "{% static '' %}images/scale/sqc.png",
           iconSize: [50, 50]
       };
 
