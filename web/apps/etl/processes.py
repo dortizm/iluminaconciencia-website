@@ -4,7 +4,7 @@
 import logging
 import configparser
 from apps.dashboard.models import TessW, Tess4C, LastNightTessW, LastWeekTessW, LastMonthTessW, HistoricalValuesTessW, \
-LastNightTess4C
+LastNightTess4C, LastWeekTess4C
 from influxdb_client import InfluxDBClient
 from datetime import datetime, timedelta
 import pytz
