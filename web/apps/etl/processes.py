@@ -73,7 +73,7 @@ class ETLProcessing:
                 pass
         self.__log.info("End Load last night Tess"+tess_type)
 
-    def load_last_week(self, days=7, time_stop="12:00:00"):
+    def load_last_week(self, days=7, time_stop="12:00:00", tess_type='W'):
         self.__log.info("Start Load last week")
         today=datetime.now().strftime("%Y-%m-%d")
         to_date = datetime.strptime(today+" "+time_stop, "%Y-%m-%d %H:%M:%S").isoformat() + "Z"
