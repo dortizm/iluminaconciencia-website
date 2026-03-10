@@ -79,10 +79,17 @@ class ETLProcessing:
         to_date = datetime.strptime(today+" "+time_stop, "%Y-%m-%d %H:%M:%S").isoformat() + "Z"
         from_date = (datetime.strptime(to_date, "%Y-%m-%dT%H:%M:%SZ")-timedelta(days=days)).isoformat() + "Z"
 
+        if tess_type=='W':
+            mag='mag'
+            LastWeekTessW.objects.all().delete()
+        elif tess_type=='4C':
+            mag='F1_mag'
+            LastWeekTess4C.objects.all().delete()
+
         query = "mag=from(bucket: \""+self.INFLUX_BUCKET+"\")\
                         |> range(start: "+from_date+", stop: "+to_date+")\
                         |> filter(fn: (r) => r[\"_measurement\"] == \"mqtt_consumer\")\
-                        |> filter(fn: (r) => r[\"_field\"] == \"mag\")\
+                        |> filter(fn: (r) => r[\"_field\"] == \""+mag+"\")\
                         |> aggregateWindow(every: 30m, fn: median, createEmpty: true)\
                 tamb=from(bucket: \""+self.INFLUX_BUCKET+"\")\
                         |> range(start: "+from_date+", stop: "+to_date+")\
@@ -113,19 +120,23 @@ class ETLProcessing:
         if len(result) == 0:
             return
         result_json=json.loads(result.to_json())
-        LastWeekTessW.objects.all().delete()
+        
         for item in result_json:
             try:
                 tess_id=item['name'] #'tess_id'
                 record_time=item['_time'] #'tiempo_lectura_nodo'
                 record_time = datetime.fromisoformat(record_time)
                 record_time = record_time.astimezone(pytz.utc)
-                magnitude=item['mag'] #'magnitude'
+                magnitude=item[mag] #'magnitude'
                 sky_temperature=item['tsky'] #'sky_temperature'
                 ambient_temperature=item['tamb'] #'ambient_temperature'
                 weather=item['weather'] #weather
-                tessw=TessW.objects.get(id=tess_id)
-                last_week=LastWeekTessW(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
+                if tess_type=='W':
+                    tessw=TessW.objects.get(id=tess_id)
+                    last_week=LastWeekTessW(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
+                elif tess_type=='4C':
+                    tess=Tess4C.objects.get(id=tess_id)
+                    last_week=LastWeekTess4C(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)   
                 last_week.save()
             except Exception as e:
                 print(e)
