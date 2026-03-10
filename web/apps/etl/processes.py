@@ -135,8 +135,8 @@ class ETLProcessing:
                     tessw=TessW.objects.get(id=tess_id)
                     last_week=LastWeekTessW(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
                 elif tess_type=='4C':
-                    tess=Tess4C.objects.get(id=tess_id)
-                    last_week=LastWeekTess4C(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)   
+                    tess4c=Tess4C.objects.get(id=tess_id)
+                    last_week=LastWeekTess4C(tess=tess4c,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)   
                 last_week.save()
             except Exception as e:
                 print(e)
