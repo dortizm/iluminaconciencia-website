@@ -159,7 +159,7 @@ class ETLProcessing:
         from_date = (datetime.strptime(to_date, "%Y-%m-%dT%H:%M:%SZ")-timedelta(days=days)).isoformat() + "Z"
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         LastMonthTessW.objects.all().delete()
-            LastMonthTess4C.objects.all().delete()
+        LastMonthTess4C.objects.all().delete()
         for instrument in instruments:
             device_type=instrument.device_type
             if device_type==1:
