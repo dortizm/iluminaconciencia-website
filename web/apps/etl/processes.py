@@ -165,7 +165,7 @@ class ETLProcessing:
             else:
                 mag='F1_mag'
             LastMonthTessW.objects.all().delete()
-            LastMonthess4C.objects.all().delete()
+            LastMonthTess4C.objects.all().delete()
             query = "mag=from(bucket: \""+self.INFLUX_BUCKET+"\")\
                             |> range(start: "+from_date+", stop: "+to_date+")\
                             |> filter(fn: (r) => r[\"_measurement\"] == \"mqtt_consumer\")\
