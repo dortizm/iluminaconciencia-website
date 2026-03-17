@@ -8,9 +8,9 @@ DEVICE_STATUS = (
 )
 
 DEVICE_TYPE = (
-    ('TessW', 'TessW'),
-    ('Tess4C', 'Tess4C'),
-    ('SQC', 'SQC'),
+    (1, 'TessW'),
+    (2, 'Tess4C'),
+    (3, 'SQC'),
 )
 
 FINANCIAMIENTO = (
@@ -29,6 +29,7 @@ class Instrument(models.Model):
     lon = models.FloatField(blank=True, null=True, verbose_name='longitud')
     image = models.ImageField(blank=True, null=True, upload_to='tess_location/', height_field=None, width_field=None, max_length=100, validators=[validate_image_tess_location], help_text='Tamano maximo de la imagen es 1Mb, sus dimensiones deben ser de 420x420 pixeles')
     last_update = models.DateTimeField(blank=True, null=True)
+    device_type = models.IntegerField(choices=DEVICE_TYPE,blank=True,null=True)
 
     class Meta:
         abstract = True

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from apps.dashboard.models import TessW, LastNight, LastWeek, LastMonth, Moon, HistoricalValues, Instrument
+from apps.dashboard.models import TessW, Tess4C, LastNightTessW, LastWeekTessW, LastMonthTessW, Moon, HistoricalValuesTessW
 import plotly.graph_objs as go
 import plotly.express as px
 from datetime import datetime
@@ -60,19 +60,24 @@ class ReportsProcessing:
         print(html_body)
 
     def observation_time_report(self):
-        tessws=Instrument.objects.all()
+        instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
 
         data={'Institución':[],'Cantidad de Datos':[],'Porcentaje':[]}
         minutes_in_week= 5 * 60 * 7
 
-        for tessw in tessws:    
+        for instrument in instruments:    
+            device_type=instrument.device_type
+            if device_type==1:
+                mag='mag'
+            else:
+                mag='F1_mag'
             query = "from(bucket: \""+self.INFLUX_BUCKET+"\")\
                                     |> range(start: -7d)\
                                     |> hourSelection(start: 4, stop: 8)\
                                     |> filter(fn: (r) => r._measurement == \"mqtt_consumer\")\
-                                    |> filter(fn: (r) => r[\"_field\"] == \"mag\")\
+                                    |> filter(fn: (r) => r[\"_field\"] == \""+mag+"\")\
                                     |> filter(fn: (r) => exists r.influxdb_tag)\
-                                    |> filter(fn: (r) => r[\"name\"] == \""+tessw.id+"\")\
+                                    |> filter(fn: (r) => r[\"name\"] == \""+instrument.id+"\")\
                                     |> count(column: \"_value\")\
                                     |> map(fn: (r) => ({ _name: r[\"name\"], _value: r[\"_value\"] }))\
                     "
@@ -83,7 +88,7 @@ class ReportsProcessing:
                 result_json=json.loads(result.to_json())
                 item = result_json[0]
                 total_measurements_week=item['_value']
-            data['Institución'].append(tessw.name)
+            data['Institución'].append(instrument.name)
             data['Cantidad de Datos'].append(total_measurements_week)
             data['Porcentaje'].append("{:.2f}%".format((total_measurements_week/minutes_in_week) * 100))
         data = pd.DataFrame(data)     
@@ -93,11 +98,11 @@ class ReportsProcessing:
 
     def create_night_graph(self, tess_id):
         try:
-            if LastNight.objects.filter(tess__id=tess_id).count() > 0:
+            if LastNightTessW.objects.filter(tess__id=tess_id).count() > 0:
                 new_timezone = pytz.timezone('America/Santiago')
-                first_update=LastNight.objects.filter(tess__id=tess_id).order_by('record_time').first().record_time
-                last_update=LastNight.objects.filter(tess__id=tess_id).order_by('record_time').last().record_time
-                df_cont_lum_last_night = pd.DataFrame(list(LastNight.objects.filter(tess__id=tess_id).order_by('record_time').values('record_time','magnitude','weather')))
+                first_update=LastNightTessW.objects.filter(tess__id=tess_id).order_by('record_time').first().record_time
+                last_update=LastNightTessW.objects.filter(tess__id=tess_id).order_by('record_time').last().record_time
+                df_cont_lum_last_night = pd.DataFrame(list(LastNightTessW.objects.filter(tess__id=tess_id).order_by('record_time').values('record_time','magnitude','weather')))
                 moon=pd.DataFrame(list(Moon.objects.filter(timestamp__gte=first_update,timestamp__lte=last_update).values('timestamp','brightness').order_by('timestamp')))
                 moon.rename(columns={'timestamp': 'record_time'}, inplace=True)
                 moon['record_time'] = moon['record_time'].dt.tz_convert(new_timezone)
@@ -137,11 +142,11 @@ class ReportsProcessing:
     def create_week_graph(self, tess_id):
         try:
             # Se cargan los datos desde la BD en un dataframe
-            if LastWeek.objects.filter(tess__id=tess_id).count() > 0:
+            if LastWeekTessW.objects.filter(tess__id=tess_id).count() > 0:
                 new_timezone = pytz.timezone('America/Santiago')
-                first_update=LastWeek.objects.filter(tess__id=tess_id).order_by('record_time').first().record_time
-                last_update=LastWeek.objects.filter(tess__id=tess_id).order_by('record_time').last().record_time
-                df_cont_lum_last_week = pd.DataFrame(list(LastWeek.objects.filter(tess__id=tess_id).order_by('record_time').values('record_time','magnitude','weather')))
+                first_update=LastWeekTessW.objects.filter(tess__id=tess_id).order_by('record_time').first().record_time
+                last_update=LastWeekTessW.objects.filter(tess__id=tess_id).order_by('record_time').last().record_time
+                df_cont_lum_last_week = pd.DataFrame(list(LastWeekTessW.objects.filter(tess__id=tess_id).order_by('record_time').values('record_time','magnitude','weather')))
                 moon=pd.DataFrame(list(Moon.objects.filter(timestamp__gte=first_update,timestamp__lte=last_update).values('timestamp','brightness').order_by('timestamp')))
                 moon.rename(columns={'timestamp': 'record_time'}, inplace=True)
                 moon['record_time'] = moon['record_time'].dt.tz_convert(new_timezone)
@@ -181,11 +186,11 @@ class ReportsProcessing:
     def create_month_graph(self, tess_id):
         try:
             # Se cargan los datos desde la BD en un dataframe
-            if LastMonth.objects.filter(tess__id=tess_id).count() > 0:
+            if LastMonthTessW.objects.filter(tess__id=tess_id).count() > 0:
                 new_timezone = pytz.timezone('America/Santiago')
-                first_update=LastMonth.objects.filter(tess__id=tess_id).order_by('record_time').first().record_time
-                last_update=LastMonth.objects.filter(tess__id=tess_id).order_by('record_time').last().record_time
-                df_cont_lum_last_month = pd.DataFrame(list(LastMonth.objects.filter(tess__id=tess_id).order_by('record_time').values('record_time','magnitude','weather')))
+                first_update=LastMonthTessW.objects.filter(tess__id=tess_id).order_by('record_time').first().record_time
+                last_update=LastMonthTessW.objects.filter(tess__id=tess_id).order_by('record_time').last().record_time
+                df_cont_lum_last_month = pd.DataFrame(list(LastMonthTessW.objects.filter(tess__id=tess_id).order_by('record_time').values('record_time','magnitude','weather')))
                 moon=pd.DataFrame(list(Moon.objects.filter(timestamp__gte=first_update,timestamp__lte=last_update).values('timestamp','brightness').order_by('timestamp')))
                 moon.rename(columns={'timestamp': 'record_time'}, inplace=True)
                 moon['record_time'] = moon['record_time'].dt.tz_convert(new_timezone)
@@ -222,7 +227,7 @@ class ReportsProcessing:
 
     def create_sky_state(self, tess_id):
         try:
-            stadistics=HistoricalValues.objects.filter(tess__id=tess_id).order_by('calculation_date').last()
+            stadistics=HistoricalValuesTessW.objects.filter(tess__id=tess_id).order_by('calculation_date').last()
             variables=['Despejado','Nublado','Cubierto']
             clear=int(stadistics.total_measurements_clear/(5*60)) if stadistics.total_measurements_clear else 0
             cloudy=int(stadistics.total_measurements_cloudy/(5*60)) if stadistics.total_measurements_cloudy else 0
@@ -245,8 +250,8 @@ class ReportsProcessing:
             tessw = TessW.objects.get(id=id)
             months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']
             month=datetime.utcnow().strftime("%-m")
-            stadistics=HistoricalValues.objects.filter(tess=tessw).order_by('calculation_date').last()
-            historical=HistoricalValues.objects.filter(tess=tessw).order_by('calculation_date')
+            stadistics=HistoricalValuesTessW.objects.filter(tess=tessw).order_by('calculation_date').last()
+            historical=HistoricalValuesTessW.objects.filter(tess=tessw).order_by('calculation_date')
             days=int(stadistics.total_measurements_month/(5*60))
             month=months[int(month)-1]
             context = {

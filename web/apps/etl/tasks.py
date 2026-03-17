@@ -27,18 +27,15 @@ def get_period():
 
 @shared_task()
 def load_last_night():
-    etl.load_last_night(14,"12:00:00",'W')
-    etl.load_last_night(14,"12:00:00",'4C')
+    etl.load_last_night(14,"12:00:00")
     
 @shared_task()
 def load_last_week():
-    etl.load_last_week(7,"12:00:00",'W')
-    etl.load_last_week(7,"12:00:00",'4C')
+    etl.load_last_week(7,"12:00:00")
 
 @shared_task()
 def load_last_month():
-    etl.load_last_month(30,"12:00:00",'W')
-    etl.load_last_month(30,"12:00:00",'4C')
+    etl.load_last_month(30,"12:00:00")
 
 @shared_task()
 def light_pollution_indicator():
