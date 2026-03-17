@@ -120,9 +120,9 @@ def tessw(request, id):
     # Se cargan los datos desde la BD en un dataframe
     if LastMonthTessW.objects.filter(tess=tessw).count() > 0:
         new_timezone = pytz.timezone('America/Santiago')
-        first_update=LastMonth.objects.filter(tess=tessw).order_by('record_time').first().record_time
-        last_update=LastMonth.objects.filter(tess=tessw).order_by('record_time').last().record_time
-        df_cont_lum_last_month = pd.DataFrame(list(LastMonth.objects.filter(tess=tessw).order_by('record_time').values('record_time','magnitude','weather')))
+        first_update=LastMonthTessW.objects.filter(tess=tessw).order_by('record_time').first().record_time
+        last_update=LastMonthTessW.objects.filter(tess=tessw).order_by('record_time').last().record_time
+        df_cont_lum_last_month = pd.DataFrame(list(LastMonthTessW.objects.filter(tess=tessw).order_by('record_time').values('record_time','magnitude','weather')))
         moon=pd.DataFrame(list(Moon.objects.filter(timestamp__gte=first_update,timestamp__lte=last_update).values('timestamp','brightness').order_by('timestamp')))
         moon.rename(columns={'timestamp': 'record_time'}, inplace=True)
         moon['record_time'] = moon['record_time'].dt.tz_convert(new_timezone)
