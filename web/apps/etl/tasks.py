@@ -6,6 +6,8 @@ from datetime import datetime, timedelta
 from .processes import ETLProcessing
 import pytz
 
+etl=ETLProcessing()
+
 def get_period():
     now_utc = datetime.utcnow()
     santiago_timezone = pytz.timezone('America/Santiago')
@@ -25,12 +27,10 @@ def get_period():
 
 @shared_task()
 def load_last_night():
-    etl=ETLProcessing()
     etl.load_last_night(14,"12:00:00")
     
 @shared_task()
 def load_last_week():
-    etl=ETLProcessing()
     etl.load_last_week(7,"12:00:00")
 
 @shared_task()
