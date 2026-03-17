@@ -287,7 +287,6 @@ class ETLProcessing:
                         tess=TessW.objects.get(id=tess_id)
                     elif device_type==2:
                         tess=Tess4C.objects.get(id=tess_id) 
-                    tess=TessW.objects.get(id=tess_id)
                     tess.median_magnitude=median_magnitude
                     tess.start_time_median_magnitude=start_time_median_magnitude
                     tess.stop_time_median_magnitude=stop_time_median_magnitude
