@@ -52,7 +52,8 @@ class ETLProcessing:
             "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())            
             for item in result_json:
                 try:
@@ -126,7 +127,8 @@ class ETLProcessing:
 
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             
             for item in result_json:
@@ -201,7 +203,8 @@ class ETLProcessing:
 
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             
             for item in result_json:
@@ -265,7 +268,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             ranges = np.array([0, 18, 18.5 , 19.25, 20.3, 21.3, 21.6, 21.75, 22])
             scale = np.array([8, 7, 6, 5, 4, 3, 2, 1])
@@ -325,7 +329,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             ranges = np.array([0, 18, 18.5 , 19.25, 20.3, 21.3, 21.6, 21.75, 22])
             scale = np.array([8, 7, 6, 5, 4, 3, 2, 1])
@@ -391,7 +396,8 @@ class ETLProcessing:
             result = self.client.query_api().query(query)
             result_json=json.loads(result.to_json())  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             for item in result_json:
                 try:
                     tess_id=item['name'] #'tess_id'
@@ -442,7 +448,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -494,7 +501,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -546,7 +554,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -598,7 +607,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -650,7 +660,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -702,7 +713,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -743,7 +755,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -771,7 +784,6 @@ class ETLProcessing:
             try:
                 tessw.percentage_measurements_month=tessw.total_measurements_month/totalMinutes
                 tessw.save()
-
             except Exception as e:
                 print(e)
                 print("Tess:" +str(tessw.tess))
@@ -811,7 +823,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -877,7 +890,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -943,7 +957,8 @@ class ETLProcessing:
                     "
             result = self.client.query_api().query(query)  
             if len(result) == 0:
-                return
+                self.__log.warning(f"Sin datos para instrumento {instrument.id}")
+                continue
             result_json=json.loads(result.to_json())
             for item in result_json:
                 try:
@@ -1030,7 +1045,6 @@ class ETLProcessing:
                 # Create folder
                 s3.put_object(Bucket=self.AWS_BUCKET_NAME_DATA, Key=(s3_folder + '/'))
                 print(f'Folder s3://{self.AWS_BUCKET_NAME_DATA}/{s3_folder} created.')
-
         except NoCredentialsError:
             print('Error Credencials.')
         except PartialCredentialsError:
