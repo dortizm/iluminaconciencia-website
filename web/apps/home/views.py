@@ -20,10 +20,11 @@ def index(request):
     fotos = Galeria.objects.filter(mostrar_principal=True).order_by('-indice')[:10]
     today = datetime.now()
     last_month = today.replace(day=1) - timedelta(days=1)
-    historical = HistoricalValuesTessW.objects.filter(month=today.month,year=today.year).order_by('-percentage_measurements_month')
+    historical_tessw = HistoricalValuesTessW.objects.filter(month=today.month,year=today.year).order_by('-percentage_measurements_month')
+    historical_tess4c = HistoricalValuesTess4C.objects.filter(month=today.month,year=today.year).order_by('-percentage_measurements_month')
     period = last_month.strftime("%b %Y")
 
-    return render(request, 'index.html', {'tessw_nodes':tessw_nodes, 'tess4c_nodes':tess4c_nodes, 'sqc_nodes':sqc_nodes, 'news':news,'historical':historical, 'period':period, 'fotos':fotos })
+    return render(request, 'index.html', {'tessw_nodes':tessw_nodes, 'tess4c_nodes':tess4c_nodes, 'sqc_nodes':sqc_nodes, 'news':news,'historical_tessw':historical_tessw,'historical_tess4c':historical_tess4c, 'period':period, 'fotos':fotos })
 
 def team(request):
     return render(request, 'team.html')

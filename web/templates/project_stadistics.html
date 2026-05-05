@@ -37,7 +37,7 @@
     <table class="table table-striped table-dark d-none d-md-table">
       <thead>
         <tr>
-          <th colspan="3" class="text-white font-weight-bold">{{ period }}</th>
+          <th colspan="4" class="text-white font-weight-bold">{{ period }}</th>
           <th colspan="4" class="text-white">Total de datos</th>
           <th colspan="3" class="text-white">Cielos despejados</th>
         </tr>
@@ -45,6 +45,7 @@
           <th scope="col" class="text-white">Institución</th>
           <th scope="col" class="text-white" width="6%">Localidad</th>
           <th scope="col" class="text-white">Escala Bortle</th>
+          <th scope="col" class="text-white">Tipo</th>
           <th scope="col" class="text-white">Cantidad de datos</th>
           <th scope="col" class="text-white">Porcentaje de datos</th>
           <th scope="col" class="text-white">Magnitud media</th>
@@ -55,18 +56,34 @@
         </tr>
       </thead>
       <tbody>
-        {% for data in historical %}
+        {% for data_tessw in historical_tessw %}
           <tr>
-            <th class="font-weight-bold"><a href="/dashboard/tessw/{{data.tess.id}}" class="text-white">{{ data.tess.name }}</a></th>
-            <td style="color:#d5a940">{{ data.tess.location }}</td>
-            <td style="color:#d5a940;font-weight: 700;">{{ data.bortle_level|default_if_none:"" }}</td>
-            <td style="color:#d5a940">{{ data.total_measurements_month }}</td>
-            <td style="color:#d5a940">{{ data.percentage_measurements_month|to_percentage }}</td>
-            <td style="color:#d5a940">{{ data.median_magnitude|floatformat:2 }}</td>
-            <td style="color:#d5a940">{{ data.stddev_magnitude|floatformat:2 }}</td>
-            <td style="color:#d5a940">{{ data.percentage_measurements_clear|to_percentage|default_if_none:"" }}</td>
-            <td style="color:#d5a940">{{ data.median_magnitude_clear|floatformat:2 }}</td>
-            <td style="color:#d5a940">{{ data.stddev_magnitude_clear|floatformat:2 }}</td>
+            <th class="font-weight-bold"><a href="/dashboard/tessw/{{data_tessw.tess.id}}" class="text-white">{{ data_tessw.tess.name }}</a></th>
+            <td style="color:#d5a940">{{ data_tessw.tess.location }}</td>
+            <td style="color:#d5a940;font-weight: 700;">{{ data_tessw.bortle_level|default_if_none:"" }}</td>
+            <td style="color:#d5a940">TessW</td>
+            <td style="color:#d5a940">{{ data_tessw.total_measurements_month }}</td>
+            <td style="color:#d5a940">{{ data_tessw.percentage_measurements_month|to_percentage }}</td>
+            <td style="color:#d5a940">{{ data_tessw.median_magnitude|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data_tessw.stddev_magnitude|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data_tessw.percentage_measurements_clear|to_percentage|default_if_none:"" }}</td>
+            <td style="color:#d5a940">{{ data_tessw.median_magnitude_clear|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data_tessw.stddev_magnitude_clear|floatformat:2 }}</td>
+          </tr>
+        {% endfor %}
+        {% for data_tess4c in historical_tess4c %}
+          <tr>
+            <th class="font-weight-bold"><a href="/dashboard/tessw/{{data_tess4c.tess.id}}" class="text-white">{{ data_tess4c.tess.name }}</a></th>
+            <td style="color:#d5a940">{{ data_tess4c.tess.location }}</td>
+            <td style="color:#d5a940;font-weight: 700;">{{ data_tess4c.bortle_level|default_if_none:"" }}</td>
+            <td style="color:#d5a940">Tess4C</td>
+            <td style="color:#d5a940">{{ data_tess4c.total_measurements_month }}</td>
+            <td style="color:#d5a940">{{ data_tess4c.percentage_measurements_month|to_percentage }}</td>
+            <td style="color:#d5a940">{{ data_tess4c.median_magnitude|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data_tess4c.stddev_magnitude|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data_tess4c.percentage_measurements_clear|to_percentage|default_if_none:"" }}</td>
+            <td style="color:#d5a940">{{ data_tess4c.median_magnitude_clear|floatformat:2 }}</td>
+            <td style="color:#d5a940">{{ data_tess4c.stddev_magnitude_clear|floatformat:2 }}</td>
           </tr>
         {% endfor %}
       </tbody>
