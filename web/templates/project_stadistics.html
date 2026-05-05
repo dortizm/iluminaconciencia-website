@@ -73,7 +73,7 @@
         {% endfor %}
         {% for data_tess4c in historical_tess4c %}
           <tr>
-            <th class="font-weight-bold"><a href="/dashboard/tessw/{{data_tess4c.tess.id}}" class="text-white">{{ data_tess4c.tess.name }}</a></th>
+            <th class="font-weight-bold"><a href="/dashboard/tess4c/{{data_tess4c.tess.id}}" class="text-white">{{ data_tess4c.tess.name }}</a></th>
             <td style="color:#d5a940">{{ data_tess4c.tess.location }}</td>
             <td style="color:#d5a940;font-weight: 700;">{{ data_tess4c.bortle_level|default_if_none:"" }}</td>
             <td style="color:#d5a940">4C</td>
