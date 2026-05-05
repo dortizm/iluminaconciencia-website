@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Multimedia, Noticia, Galeria
-from apps.dashboard.models import TessW, Tess4C, SQC, HistoricalValues, HistoricalValuesTessW
+from apps.dashboard.models import TessW, Tess4C, SQC, HistoricalValues, HistoricalValuesTessW, HistoricalValuesTess4C
 from datetime import datetime, timedelta
 from .form import SolicitudForm
 from django.core.files.base import ContentFile
