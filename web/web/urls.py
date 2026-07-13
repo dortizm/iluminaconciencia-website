@@ -26,6 +26,7 @@ urlpatterns = [
     re_path(r'^reports/', include('apps.reports.urls'), name='reports'),
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    re_path(r'^api/v1/', include('apps.api.urls')),
 ]
 
 if settings.DEBUG:

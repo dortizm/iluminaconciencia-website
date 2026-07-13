@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'import_export',
     'django_recaptcha',
-    'rest_framework'
+    'rest_framework',
+    'apps.api',
 ]
 
 MIDDLEWARE = [
