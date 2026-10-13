@@ -10,20 +10,151 @@ LastNightTess4C, LastWeekTess4C, LastMonthTess4C, HistoricalValuesTess4C
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 from django.utils import timezone
 from datetime import datetime, timedelta
 import pytz
 import json    
 from rest_framework import viewsets, filters
-from .serializers import TessWSerializer
+from rest_framework.response import Response
+from .serializers import TessWSerializer, Tess4CSerializer
 
 class tessw_view_set(viewsets.ReadOnlyModelViewSet):
+
     queryset = TessW.objects.filter(active=True)
     serializer_class = TessWSerializer
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+
+    filter_backends = [
+        filters.SearchFilter,
+        filters.OrderingFilter
+    ]
+
     search_fields = ['name', 'commune', 'region']
-    ordering_fields = ['last_update', 'median_magnitude']
+
+    ordering_fields = [
+        'last_update',
+        'median_magnitude'
+    ]
+
     ordering = ['name']
+
+    def list(self, request, *args, **kwargs):
+
+        # ============================================
+        # 1. OBTENER INSTRUMENTOS ACTIVOS
+        # ============================================
+
+        tessw = TessW.objects.filter(active=True)
+        tess4c = Tess4C.objects.filter(active=True)
+
+        # ============================================
+        # 2. FILTRAR POR BÚSQUEDA
+        # ============================================
+
+        search = request.query_params.get(
+            'search', ''
+        ).strip()
+
+        if search:
+            # Todos los términos deben coincidir,
+            # pero pueden estar en campos diferentes.
+            for term in search.split():
+                condition = (
+                    Q(name__icontains=term) |
+                    Q(commune__icontains=term) |
+                    Q(region__icontains=term)
+                )
+
+                tessw = tessw.filter(condition)
+                tess4c = tess4c.filter(condition)
+
+        # ============================================
+        # 3. COMBINAR AMBOS MODELOS
+        # ============================================
+
+        instruments = list(tessw) + list(tess4c)
+
+        # ============================================
+        # 4. ORDENAMIENTO
+        # ============================================
+
+        ordering = request.query_params.get(
+            'ordering', 'name'
+        )
+
+        descending = ordering.startswith('-')
+        field = ordering.lstrip('-')
+
+        allowed_fields = [
+            'name',
+            'last_update',
+            'median_magnitude'
+        ]
+
+        if field not in allowed_fields:
+            field = 'name'
+            descending = False
+
+        def sort_key(obj):
+            value = getattr(obj, field, None)
+
+            if field == 'name':
+                return (value or '').casefold()
+
+            return value
+
+        # Ordenamiento estable por valor.
+        # Se mantienen los nulos al final.
+        non_null = [
+            obj for obj in instruments
+            if getattr(obj, field, None) is not None
+        ]
+
+        null_values = [
+            obj for obj in instruments
+            if getattr(obj, field, None) is None
+        ]
+
+        non_null.sort(
+            key=sort_key,
+            reverse=descending
+        )
+
+        instruments = non_null + null_values
+
+        # ============================================
+        # 5. SERIALIZACIÓN
+        # ============================================
+
+        data = []
+
+        for instrument in instruments:
+
+            if isinstance(instrument, Tess4C):
+                serializer = Tess4CSerializer(
+                    instrument,
+                    context={'request': request}
+                )
+
+            else:
+                serializer = TessWSerializer(
+                    instrument,
+                    context={'request': request}
+                )
+
+            data.append(serializer.data)
+
+        # ============================================
+        # 6. PAGINACIÓN
+        # ============================================
+
+        page = self.paginate_queryset(data)
+
+        if page is not None:
+            return self.get_paginated_response(page)
+
+        return Response(data)
+
 
 def tessw(request, id):
     # Se abre el archivo con los datos y se cargan en un dataframe
@@ -355,7 +486,7 @@ def set_tess_4c_state(request):
             last_magnitude_f4 = request.POST['f4_magnitude']
             last_ambient_temperature = request.POST['ambient_temperature']
             last_sky_temperature = request.POST['sky_temperature']
-            tessw.last_update=last_update
+            tess4c.last_update=last_update
             active=True
         else:
             last_frequency=None
