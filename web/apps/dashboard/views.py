@@ -21,7 +21,7 @@ from .serializers import TessWSerializer, Tess4CSerializer
 
 class tessw_view_set(viewsets.ReadOnlyModelViewSet):
 
-    queryset = TessW.objects.filter(active=True)
+    queryset = TessW.objects.all()
     serializer_class = TessWSerializer
 
     filter_backends = [
@@ -44,8 +44,8 @@ class tessw_view_set(viewsets.ReadOnlyModelViewSet):
         # 1. OBTENER INSTRUMENTOS ACTIVOS
         # ============================================
 
-        tessw = TessW.objects.filter(active=True)
-        tess4c = Tess4C.objects.filter(active=True)
+        tessw = TessW.objects.all()
+        tess4c = Tess4C.objects.all()
 
         # ============================================
         # 2. FILTRAR POR BÚSQUEDA
