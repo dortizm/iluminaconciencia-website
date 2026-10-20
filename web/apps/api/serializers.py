@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.dashboard.models import Tess4C, TessW
-
+from apps.home.models import Noticia, Galeria, Multimedia
 
 class InstrumentCoordinatesSerializer(serializers.ModelSerializer):
     """Campos públicos comunes a los instrumentos TESS."""
@@ -30,3 +30,9 @@ class Tess4CCoordinatesSerializer(InstrumentCoordinatesSerializer):
 
     class Meta(InstrumentCoordinatesSerializer.Meta):
         model = Tess4C
+
+class NoticiasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Noticia
+        fields = ("titulo", "resumen", "fecha", "cuerpo", "imagen", "mostrar", "mostrar_principal")
+
