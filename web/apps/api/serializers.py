@@ -41,3 +41,13 @@ class ArticulosSerializer(serializers.ModelSerializer):
         model = Articulo
         fields = ("titulo", "fecha", "archivo")
 
+class MultimediasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Multimedia
+        fields = ("titulo", "descripcion", "linkcode", "imagen", "mostrar", "orden")
+
+class GaleriasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Galeria
+        fields = ("nombre", "autor", "indice", "imagen_hd", "imagen_thumb", "mostrar", "mostrar_principal")
+
