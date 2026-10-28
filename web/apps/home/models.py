@@ -7,6 +7,20 @@ from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
+class Articulo(models.Model):
+    fecha = models.DateField(verbose_name="Fecha de publicación")
+    titulo = models.CharField(max_length=255, verbose_name="Título")
+    archivo = models.FileField(upload_to='media/articulos/', verbose_name="Archivo")
+
+    class Meta:
+        verbose_name = "Artículo"
+        verbose_name_plural = "Artículos"
+        ordering = ["-fecha"]
+
+    def __str__(self):
+        return self.titulo
+
+
 class Multimedia(models.Model):
     titulo = models.CharField(max_length=200, blank=False, null=False)
     descripcion = models.CharField(max_length=1500, blank=True, null=True)

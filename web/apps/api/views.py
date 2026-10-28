@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.dashboard.models import Tess4C, TessW
-from apps.home.models import Noticia
-from .serializers import Tess4CCoordinatesSerializer, TessWCoordinatesSerializer, NoticiasSerializer
+from apps.home.models import Noticia, Articulo
+from .serializers import Tess4CCoordinatesSerializer, TessWCoordinatesSerializer, NoticiasSerializer, \
+ArticulosSerializer
 
 
 class PublicCoordinatesMixin:
@@ -70,3 +71,7 @@ class InstrumentCoordinatesList(PublicCoordinatesMixin, APIView):
 class NoticiasList(generics.ListAPIView):
     serializer_class = NoticiasSerializer
     queryset = Noticia.objects.all()
+
+class ArticulosList(generics.ListAPIView):
+    serializer_class = ArticulosSerializer
+    queryset = Articulo.objects.all()

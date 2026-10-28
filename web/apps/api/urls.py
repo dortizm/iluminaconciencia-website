@@ -5,6 +5,7 @@ from .views import (
     Tess4CCoordinatesList,
     TessWCoordinatesList,
     NoticiasList,
+    ArticulosList,
 )
 
 app_name = "api"
@@ -14,4 +15,5 @@ urlpatterns = [
     path("tess-w/", TessWCoordinatesList.as_view(), name="tess-w-list"),
     path("tess-4c/", Tess4CCoordinatesList.as_view(), name="tess-4c-list"),
     path("noticias/", NoticiasList.as_view(), name="noticias"),
+    path("articulos/", ArticulosList.as_view(), name="articulos"),
 ]

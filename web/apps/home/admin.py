@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Noticia, Multimedia, Galeria, Solicitud
+from .models import Noticia, Multimedia, Galeria, Solicitud, Articulo
+
+class ArticuloAdmin(admin.ModelAdmin):
+    list_display = ('titulo','fecha','archivo')
 
 class NoticiaAdmin(admin.ModelAdmin):
     list_display = ('titulo','fecha','resumen', 'mostrar')
@@ -13,7 +16,7 @@ class GaleriaAdmin(admin.ModelAdmin):
 class SolicitudAdmin(admin.ModelAdmin):
     fields = ('nombre', 'apellidos', 'institucion', 'correo_electronico','archivo_csv_luminarias','archivo_imagen_pago')
 
-
+admin.site.register(Articulo, ArticuloAdmin)
 admin.site.register(Noticia, NoticiaAdmin)
 admin.site.register(Multimedia, MultimediaAdmin)
 admin.site.register(Galeria, GaleriaAdmin)
