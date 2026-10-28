@@ -34,20 +34,20 @@ class Tess4CCoordinatesSerializer(InstrumentCoordinatesSerializer):
 class NoticiasSerializer(serializers.ModelSerializer):
     class Meta:
         model = Noticia
-        fields = ("titulo", "resumen", "fecha", "cuerpo", "imagen", "mostrar", "mostrar_principal")
+        fields = ("id", "titulo", "resumen", "fecha", "cuerpo", "imagen", "mostrar", "mostrar_principal")
 
 class ArticulosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Articulo
-        fields = ("titulo", "fecha", "archivo")
+        fields = ("id", "titulo", "fecha", "archivo")
 
 class MultimediasSerializer(serializers.ModelSerializer):
     class Meta:
         model = Multimedia
-        fields = ("titulo", "descripcion", "linkcode", "imagen", "mostrar", "orden")
+        fields = ("id", "titulo", "descripcion", "linkcode", "imagen", "mostrar", "orden")
 
 class GaleriasSerializer(serializers.ModelSerializer):
     class Meta:
         model = Galeria
-        fields = ("nombre", "autor", "indice", "imagen_hd", "imagen_thumb", "mostrar", "mostrar_principal")
+        fields = ("id", "nombre", "autor", "indice", "imagen_hd", "imagen_thumb", "mostrar", "mostrar_principal")
 
