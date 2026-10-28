@@ -69,7 +69,7 @@ class ETLProcessing:
                         tess=TessW.objects.get(id=tess_id)
                         last_night=LastNightTessW(tess=tess,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
                         last_night.save()
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         last_night=LastNightTess4C(tess=tess,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
                         last_night.save()
@@ -145,7 +145,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tessw=TessW.objects.get(id=tess_id)
                         last_week=LastWeekTessW(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess4c=Tess4C.objects.get(id=tess_id)
                         last_week=LastWeekTess4C(tess=tess4c,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)   
                     last_week.save()
@@ -221,7 +221,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tessw=TessW.objects.get(id=tess_id)
                         last_month=LastMonthTessW(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess4c=Tess4C.objects.get(id=tess_id)
                         last_month=LastMonthTess4C(tess=tess4c,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather) 
                     last_month.save()
@@ -286,7 +286,7 @@ class ETLProcessing:
                     stop_time_median_magnitude = stop_time_median_magnitude.astimezone(pytz.utc)
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id) 
                     tess.median_magnitude=median_magnitude
                     tess.start_time_median_magnitude=start_time_median_magnitude
@@ -346,7 +346,7 @@ class ETLProcessing:
                     stop_time_median_magnitude = stop_time_median_magnitude.astimezone(pytz.utc)
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id) 
                     tess.median_magnitude=median_magnitude
                     tess.start_time_median_magnitude=start_time_median_magnitude
@@ -355,7 +355,7 @@ class ETLProcessing:
                     tess.save()
                     if device_type=='1':
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.median_magnitude = median_magnitude
                     hitorical_values.bortle_level = scale[np.digitize(median_magnitude, ranges) - 1]
@@ -405,7 +405,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.stddev_magnitude = stddev_magnitude
@@ -458,7 +458,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.median_magnitude_clear=median_magnitude_clear
@@ -511,7 +511,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.stddev_magnitude_clear=stddev_magnitude_clear
@@ -564,7 +564,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.median_magnitude_covered=median_magnitude_covered
@@ -617,7 +617,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.stddev_magnitude_covered=stddev_magnitude_covered
@@ -670,7 +670,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.median_magnitude_cloudy=median_magnitude_cloudy
@@ -723,7 +723,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.stddev_magnitude_cloudy=stddev_magnitude_cloudy
@@ -765,7 +765,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.total_measurements_month=total_measurements_month*10
@@ -833,7 +833,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.total_measurements_clear=total_measurements_clear*10
@@ -900,7 +900,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.total_measurements_covered=total_measurements_covered*10
@@ -967,7 +967,7 @@ class ETLProcessing:
                     if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
-                    elif device_type==2:
+                    elif device_type=='2':
                         tess=Tess4C.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     hitorical_values.total_measurements_cloudy=total_measurements_cloudy*10
@@ -1069,7 +1069,7 @@ class ETLProcessing:
                     s3.put_object_acl(Bucket=self.AWS_BUCKET_NAME_DATA, Key=s3_file, ACL='public-read')
                     if tess.device_type=='1':
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year)
-                    elif tess.device_type==2:
+                    elif tess.device_type=='2':
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year)
                     region = self.AWS_S3_REGION_NAME
                     url = f"https://{self.AWS_BUCKET_NAME_DATA}.s3.{region}.amazonaws.com/{s3_folder}/{file}"
@@ -1097,7 +1097,7 @@ class ETLProcessing:
                     s3.put_object_acl(Bucket=self.AWS_BUCKET_NAME_DATA, Key=s3_file, ACL='public-read')
                     if tess.device_type=='1':
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year)
-                    elif tess.device_type==2:
+                    elif tess.device_type=='2':
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year)
                     region = self.AWS_S3_REGION_NAME
                     url = f"https://{self.AWS_BUCKET_NAME_DATA}.s3.{region}.amazonaws.com/{s3_folder}/{file}"
