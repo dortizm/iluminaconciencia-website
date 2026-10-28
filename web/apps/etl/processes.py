@@ -27,7 +27,7 @@ class ETLProcessing:
         LastNightTess4C.objects.all().delete()
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -65,13 +65,14 @@ class ETLProcessing:
                     sky_temperature=item['tsky'] #'sky_temperature'
                     ambient_temperature=item['tamb'] #'ambient_temperature'
                     weather=item['weather'] #weather
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         last_night=LastNightTessW(tess=tess,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
+                        last_night.save()
                     elif device_type==2:
                         tess=Tess4C.objects.get(id=tess_id)
                         last_night=LastNightTess4C(tess=tess,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
-                    last_night.save()
+                        last_night.save()
                     self.__log.info("End Load last night Tess "+tess_id)
                 except Exception as e:
                     print(e)
@@ -88,7 +89,7 @@ class ETLProcessing:
         LastWeekTess4C.objects.all().delete()
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -141,7 +142,7 @@ class ETLProcessing:
                     sky_temperature=item['tsky'] #'sky_temperature'
                     ambient_temperature=item['tamb'] #'ambient_temperature'
                     weather=item['weather'] #weather
-                    if device_type==1:
+                    if device_type=='1':
                         tessw=TessW.objects.get(id=tess_id)
                         last_week=LastWeekTessW(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
                     elif device_type==2:
@@ -164,7 +165,7 @@ class ETLProcessing:
         LastMonthTess4C.objects.all().delete()
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -217,7 +218,7 @@ class ETLProcessing:
                     sky_temperature=item['tsky'] #'sky_temperature'
                     ambient_temperature=item['tamb'] #'ambient_temperature'
                     weather=item['weather'] #weather
-                    if device_type==1:
+                    if device_type=='1':
                         tessw=TessW.objects.get(id=tess_id)
                         last_month=LastMonthTessW(tess=tessw,record_time=record_time,ambient_temperature=ambient_temperature,magnitude=magnitude,sky_temperature=sky_temperature,weather=weather)
                     elif device_type==2:
@@ -243,7 +244,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -283,7 +284,7 @@ class ETLProcessing:
                     stop_time_median_magnitude=item['_stop_tess'] #'magnitude'
                     stop_time_median_magnitude = datetime.fromisoformat(stop_time_median_magnitude)
                     stop_time_median_magnitude = stop_time_median_magnitude.astimezone(pytz.utc)
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                     elif device_type==2:
                         tess=Tess4C.objects.get(id=tess_id) 
@@ -303,7 +304,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -343,7 +344,7 @@ class ETLProcessing:
                     stop_time_median_magnitude=item['_stop_tess'] #'magnitude'
                     stop_time_median_magnitude = datetime.fromisoformat(stop_time_median_magnitude)
                     stop_time_median_magnitude = stop_time_median_magnitude.astimezone(pytz.utc)
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                     elif device_type==2:
                         tess=Tess4C.objects.get(id=tess_id) 
@@ -352,7 +353,7 @@ class ETLProcessing:
                     tess.stop_time_median_magnitude=stop_time_median_magnitude
                     tess.bortle_level = scale[np.digitize(median_magnitude, ranges) - 1]
                     tess.save()
-                    if device_type==1:
+                    if device_type=='1':
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
@@ -369,7 +370,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -401,7 +402,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['name'] #'tess_id'
                     stddev_magnitude=item['_value_tess'] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -419,7 +420,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -454,7 +455,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['name'] #'tess_id'
                     median_magnitude_clear=item[mag] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -472,7 +473,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -507,7 +508,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['name'] #'tess_id'
                     stddev_magnitude_clear=item[mag] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -525,7 +526,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -560,7 +561,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['name'] #'tess_id'
                     median_magnitude_covered=item[mag] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -578,7 +579,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -613,7 +614,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['name'] #'tess_id'
                     stddev_magnitude_covered=item[mag] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -631,7 +632,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -666,7 +667,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['name'] #'tess_id'
                     median_magnitude_cloudy=item[mag] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -684,7 +685,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -719,7 +720,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['name'] #'tess_id'
                     stddev_magnitude_cloudy=item[mag] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -737,7 +738,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -761,7 +762,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['_name'] #'tess_id'
                     total_measurements_month=item['_value'] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -802,7 +803,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -829,7 +830,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['_name'] #'tess_id'
                     total_measurements_clear=item['_value'] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -869,7 +870,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -896,7 +897,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['_name'] #'tess_id'
                     total_measurements_covered=item['_value'] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -936,7 +937,7 @@ class ETLProcessing:
         instruments = list(TessW.objects.all()) + list(Tess4C.objects.all())
         for instrument in instruments:
             device_type=instrument.device_type
-            if device_type==1:
+            if device_type=='1':
                 mag='mag'
             else:
                 mag='F1_mag'
@@ -963,7 +964,7 @@ class ETLProcessing:
                 try:
                     tess_id=item['_name'] #'tess_id'
                     total_measurements_cloudy=item['_value'] #'magnitude'
-                    if device_type==1:
+                    if device_type=='1':
                         tess=TessW.objects.get(id=tess_id)
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year, calculation_date=now)
                     elif device_type==2:
@@ -1001,7 +1002,7 @@ class ETLProcessing:
 
     def get_month_data(self, tess, from_date, to_date, now, period):
         device_type=tess.device_type
-        if device_type==1:
+        if device_type=='1':
             mag='mag'
         else:
             mag='F1_mag'
@@ -1066,7 +1067,7 @@ class ETLProcessing:
                     s3_file = os.path.join(s3_folder, file)
                     s3.upload_file(file, self.AWS_BUCKET_NAME_DATA, s3_file)
                     s3.put_object_acl(Bucket=self.AWS_BUCKET_NAME_DATA, Key=s3_file, ACL='public-read')
-                    if tess.device_type==1:
+                    if tess.device_type=='1':
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year)
                     elif tess.device_type==2:
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year)
@@ -1094,7 +1095,7 @@ class ETLProcessing:
                     s3_file = os.path.join(s3_folder, file)
                     s3.upload_file(file, self.AWS_BUCKET_NAME_DATA, s3_file)
                     s3.put_object_acl(Bucket=self.AWS_BUCKET_NAME_DATA, Key=s3_file, ACL='public-read')
-                    if tess.device_type==1:
+                    if tess.device_type=='1':
                         hitorical_values, created = HistoricalValuesTessW.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year)
                     elif tess.device_type==2:
                         hitorical_values, created = HistoricalValuesTess4C.objects.get_or_create(tess=tess, day=period.day, month=period.month, year=period.year)
