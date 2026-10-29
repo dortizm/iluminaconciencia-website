@@ -27,16 +27,23 @@ class Tess4CCoordinatesList(PublicCoordinatesMixin, generics.ListAPIView):
 
 
 class InstrumentCoordinatesList(PublicCoordinatesMixin, APIView):
-    """Lista conjunta de TESS-W y TESS-4C.
+    """
+    Lista conjunta de TESS-W y TESS-4C.
 
-    Se puede filtrar mediante ``?type=tess-w`` o ``?type=tess-4c``.
+    Filtros disponibles:
+    - ?type=tess-w
+    - ?type=tess-4c
+    - ?id=stars1496
+    - ?id=stars1496&type=tess-4c
     """
 
     valid_types = {"tess-w", "tess-4c"}
 
     def get(self, request):
         instrument_type = request.query_params.get("type")
+        instrument_id = request.query_params.get("id")
 
+        # Validar tipo de instrumento
         if instrument_type and instrument_type not in self.valid_types:
             return Response(
                 {
@@ -50,21 +57,51 @@ class InstrumentCoordinatesList(PublicCoordinatesMixin, APIView):
 
         instruments = []
 
+        # Consultar TESS-W
         if instrument_type in (None, "tess-w"):
+            queryset = TessW.objects.all()
+
+            if instrument_id:
+                queryset = queryset.filter(id=instrument_id)
+
             instruments.extend(
                 TessWCoordinatesSerializer(
-                    TessW.objects.all().order_by("name", "id"), many=True
+                    queryset.order_by("name", "id"),
+                    many=True,
+                    context={"request": request}
                 ).data
             )
 
+        # Consultar TESS-4C
         if instrument_type in (None, "tess-4c"):
+            queryset = Tess4C.objects.all()
+
+            if instrument_id:
+                queryset = queryset.filter(id=instrument_id)
+
             instruments.extend(
                 Tess4CCoordinatesSerializer(
-                    Tess4C.objects.all().order_by("name", "id"), many=True
+                    queryset.order_by("name", "id"),
+                    many=True,
+                    context={"request": request}
                 ).data
             )
 
-        instruments.sort(key=lambda item: (item["name"].casefold(), item["id"]))
+        # Ordenar instrumentos por nombre e ID
+        instruments.sort(
+            key=lambda item: (
+                (item.get("name") or "").casefold(),
+                item["id"]
+            )
+        )
+
+        # Si se consulta un ID específico y no existe
+        if instrument_id and not instruments:
+            return Response(
+                {"detail": "Instrumento no encontrado."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
         return Response(instruments)
 
 
