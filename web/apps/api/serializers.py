@@ -3,19 +3,58 @@ from rest_framework import serializers
 from apps.dashboard.models import Tess4C, TessW
 from apps.home.models import Noticia, Galeria, Multimedia, Articulo
 
+COMMON_FIELDS = [
+    'id',
+    'name',
+    'commune',
+    'location',
+    'region',
+    'financiamiento',
+    'financiamiento_display',
+    'lat',
+    'lon',
+    'image',
+    'last_update',
+    'device_type',
+    'last_frequency',
+    'last_magnitude',
+    'last_ambient_temperature',
+    'last_sky_temperature',
+    'status',
+    'status_display',
+    'median_magnitude',
+    'start_time_median_magnitude',
+    'stop_time_median_magnitude',
+    'bortle_level',
+    'active',
+    'institution_email',
+    'institution_email_verification',
+    'solar',
+    'type',
+]
+
 class InstrumentCoordinatesSerializer(serializers.ModelSerializer):
     """Campos públicos comunes a los instrumentos TESS."""
 
+    financiamiento_display = serializers.CharField(
+        source='financiamiento_verbose',
+        read_only=True
+    )
+
+    status_display = serializers.CharField(
+        source='status_verbose',
+        read_only=True
+    )
+
     type = serializers.SerializerMethodField()
 
-    type_name = ""
-
     def get_type(self, obj):
-        return self.type_name
+        if isinstance(obj, Tess4C):
+            return 'TESS4C'
+        return 'TESS-W'
 
     class Meta:
-        fields = ("id", "name", "type", "lat", "lon")
-        read_only_fields = fields
+        fields = COMMON_FIELDS
 
 
 class TessWCoordinatesSerializer(InstrumentCoordinatesSerializer):
